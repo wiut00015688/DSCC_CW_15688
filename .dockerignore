@@ -1,0 +1,13 @@
+venv/
+pycache/
+*.pyc
+*.pyo
+.env
+.git/
+.gitignore
+db.sqlite3
+staticfiles/
+media/
+*.egg-info/
+.DS_Store
+README.md
