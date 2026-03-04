@@ -1,0 +1,36 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<div class="card p-4 mb-4">
+    <div class="d-flex justify-content-between align-items-start">
+        <h2>{{ task.title }}</h2>
+        <div>
+            <a href="{% url 'task_edit' task.pk %}" class="btn btn-outline-secondary">Edit</a>
+            <a href="{% url 'task_delete' task.pk %}" class="btn btn-outline-danger ms-2">Delete</a>
+        </div>
+    </div>
+    <p class="text-muted">{{ task.description }}</p>
+    <div class="row mt-3">
+        <div class="col-md-3"><strong>Status:</strong> {{ task.get_status_display }}</div>
+        <div class="col-md-3"><strong>Priority:</strong> {{ task.get_priority_display }}</div>
+        <div class="col-md-3"><strong>Category:</strong> {{ task.category|default:"None" }}</div>
+        <div class="col-md-3"><strong>Due:</strong> {{ task.due_date|default:"No date" }}</div>
+    </div>
+</div>
+<div class="card p-4">
+    <h5>Comments ({{ comments.count }})</h5>
+    {% for comment in comments %}
+        <div class="border-bottom py-2">
+            <strong>{{ comment.author.username }}</strong>
+            <span class="text-muted small ms-2">{{ comment.created_at|date:"M d, Y" }}</span>
+            <p class="mb-0">{{ comment.text }}</p>
+        </div>
+    {% empty %}
+        <p class="text-muted">No comments yet.</p>
+    {% endfor %}
+    <form method="POST" class="mt-3">
+        {% csrf_token %}
+        {{ comment_form }}
+        <button type="submit" class="btn btn-dark mt-2">Add Comment</button>
+    </form>
+</div>
+{% endblock %}
