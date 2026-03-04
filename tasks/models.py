@@ -7,7 +7,7 @@ class Category(models.Model):
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def str(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -43,7 +43,7 @@ class Task(models.Model):
     # Many-to-many: tasks can be assigned to multiple users
     assigned_to = models.ManyToManyField(User, related_name='assigned_tasks', blank=True)
 
-    def str(self):
+    def __str__(self):
         return self.title
 
 
@@ -53,5 +53,5 @@ class Comment(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def str(self):
+    def __str__(self):
         return f"Comment by {self.author.username} on {self.task.title}"
