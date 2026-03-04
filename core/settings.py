@@ -1,5 +1,3 @@
-from email.policy import default
-
 from decouple import config
 from pathlib import Path
 

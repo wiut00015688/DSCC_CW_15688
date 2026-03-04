@@ -1,4 +1,3 @@
-import pytest
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -119,7 +118,7 @@ class AuthViewTest(TestCase):
 
     def test_user_registration(self):
         """Test user can register successfully"""
-        response = self.client.post(reverse('register'), {
+        _ = self.client.post(reverse('register'), {
             'username': 'newuser',
             'email': 'newuser@test.com',
             'password1': 'complexpass123!',
@@ -163,7 +162,7 @@ class AuthViewTest(TestCase):
 
         def test_task_create(self):
             """Test task can be created via POST"""
-            response = self.client.post(reverse('task_create'), {
+            _ = self.client.post(reverse('task_create'), {
                 'title': 'New Task',
                 'description': 'New Description',
                 'status': 'todo',
@@ -178,7 +177,7 @@ class AuthViewTest(TestCase):
 
         def test_task_edit(self):
             """Test task can be edited"""
-            response = self.client.post(
+            _ = self.client.post(
                 reverse('task_edit', args=[self.task.pk]), {
                     'title': 'Updated Task',
                     'status': 'in_progress',
@@ -190,7 +189,7 @@ class AuthViewTest(TestCase):
 
         def test_task_delete(self):
             """Test task can be deleted"""
-            response = self.client.post(
+            _ = self.client.post(
                 reverse('task_delete', args=[self.task.pk])
             )
             self.assertEqual(Task.objects.filter(pk=self.task.pk).count(), 0)
