@@ -20,25 +20,31 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
     libpq5 \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean \
-    && apt-get autoremove -y
+    && apt-get clean
 
 COPY --from=builder /wheels /wheels
 RUN pip install --no-cache-dir --no-index --find-links=/wheels /wheels/* \
-    && rm -rf /wheels \
-    && find / -type d -name pycache -exec rm -rf {} + 2>/dev/null || true
+    && rm -rf /wheels
 
+# Create non-root user
 RUN addgroup --system appgroup && \
     adduser --system --ingroup appgroup appuser
 
+# Copy project and entrypoint
 COPY . .
+COPY entrypoint.sh /entrypoint.sh
 
-RUN mkdir -p /app/staticfiles /app/media && \
-    chown -R appuser:appgroup /app
+# Set permissions BEFORE switching user
+RUN chmod +x /entrypoint.sh && \
+    mkdir -p /app/staticfiles /app/media && \
+    chown -R appuser:appgroup /app && \
+    chown appuser:appgroup /entrypoint.sh
 
+# Switch to non-root user
 USER appuser
 
 EXPOSE 8000
 
-CMD ["gunicorn", "core.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "120"]
+CMD ["/entrypoint.sh"]
