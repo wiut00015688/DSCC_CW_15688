@@ -128,3 +128,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://taskmanager.chickenkiller.com',
+    'http://taskmanager.chickenkiller.com',
+    'http://206.189.59.10',
+]
