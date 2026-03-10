@@ -14,3 +14,7 @@
 .btn-lg {
     background-color: green;
 }
+
+.navbar {
+    background-color: #2c3e50 !important; /* dark blue */
+}
